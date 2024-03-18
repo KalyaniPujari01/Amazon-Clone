@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="image-slider">
+      <img src="/Images/adbanner.jpg" alt="Image 1" />
+      <img src="/Images/adbanner1.jpg" alt="Image 2" />
+      <img src="/Images/adbanner2.jpg" alt="Image 3" />
+    </div>
+
+    <style>
+      .image-slider {
+        display: flex;
+        overflow: hidden;
+      }
+
+      img {
+        width: 100%;
+        transition: transform 0.5s ease;
+      }
+    </style>
+
+    <script>
+      let startX;
+      let currentX;
+      const threshold = 50; // Minimum swipe distance
+
+      const slider = document.querySelector(".image-slider");
+      let currentImageIndex = 0;
+
+      slider.addEventListener("mousedown", (e) => {
+        startX = e.clientX;
+      });
+
+      slider.addEventListener("mouseup", (e) => {
+        currentX = e.clientX;
+        const diff = startX - currentX;
+        if (
+          diff > threshold &&
+          currentImageIndex < slider.children.length - 1
+        ) {
+          currentImageIndex++;
+          slider.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+        } else if (diff < -threshold && currentImageIndex > 0) {
+          currentImageIndex--;
+          slider.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+        }
+      });
+
+      // For touch devices
+      slider.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+      });
+
+      slider.addEventListener("touchend", (e) => {
+        currentX = e.changedTouches[0].clientX;
+        const diff = startX - currentX;
+        if (
+          diff > threshold &&
+          currentImageIndex < slider.children.length - 1
+        ) {
+          currentImageIndex++;
+          slider.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+        } else if (diff < -threshold && currentImageIndex > 0) {
+          currentImageIndex--;
+          slider.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+        }
+      });
+    </script>
+  </body>
+</html>
